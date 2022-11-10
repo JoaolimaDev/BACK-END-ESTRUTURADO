@@ -15,31 +15,26 @@ class Login
     public function __construct(string $opt, string $db)
     {
 
-        if(Ctrl::Auth_call($_SERVER['HTTP_AUTHORIZATION'], $db)){
-    
-            switch ($opt) {
+        switch ($opt) {
 
-                case 'login':
-                    
-                        return $this->Login($db);
+            case 'login':
 
-                    break;
-                
-                default:
-
+             return $this->Login($db);
+               
+            break;
+            
+            default:
+               
                 http_response_code(403);
                 echo json_encode([
                     'Sucesso' => 0,
                 'Mensagem' => 'Operação inválida!'
                 ]);
                 exit;
-
-                    
-                break;
-
-            }
-
+                
+            break;
         }
+        
 
     }
 
@@ -48,11 +43,13 @@ class Login
         $data = json_decode(file_get_contents("php://input"));
 
         if (empty(trim($data->user))):
+            http_response_code(400);
             echo json_encode(['sucesso' => 0, 'mensagem' => 'Adicione o usuário!']);
             exit;
         endif;
 
         if (empty(trim($data->senha))):
+            http_response_code(400);
             echo json_encode(['sucesso' => 0, 'mensagem' => 'Adicione a senha!']);
             exit;
         endif;
@@ -97,30 +94,28 @@ class Login
                     http_response_code(200);  //HTTP 200 OK
                     echo json_encode([
                     'Sucesso' => 1,
-                    'Mensagem' => 'Usuário autenticado '. $dados['user'],
+                    'Mensagem' => 'Usuário autenticado - '. $dados['user'],
                     'Session_id' => $log]);
                     exit; 
                 }
 
-
-
             }else{
 
-                http_response_code(403);
+                http_response_code(400);
                 echo json_encode([
                     'Sucesso' => 0,
-                   'Mensagem' => 'Email ou Senha inválidos'
+                   'Mensagem' => 'Usuário ou senha inválidos!'
                 ]);
                 exit;
             
             }
-
+        
 
         }else{
-            http_response_code(403);
+            http_response_code(400);
             echo json_encode([
                 'Sucesso' => 0,
-               'Mensagem' => 'Email ou Senha inválidos'
+               'Mensagem' => 'Usuário ou senha inválidos!'
             ]);
             exit;
         }
@@ -136,7 +131,7 @@ class Login
         $stmt = $conn->prepare($query);
         //bind dos valores
         $stmt->bindValue(':user_log', $back_log, PDO::PARAM_STR);
-        $stmt->bindValue(':user', $user, PDO::PARAM_STR);
+        $stmt->bindValue(':user', $user. " logou", PDO::PARAM_STR);
 
         $stmt->execute();
             

@@ -23,8 +23,7 @@ class Token
         $payload = json_encode([
         'iss' => 'GIP',
         'user' => $user,
-        'exp'=> date("Y-m-d", strtotime("+1 day")),
-        'log-data' => date("Y-m-d h:i:sa")
+        'exp'=> date("Y-m-d", strtotime("+1 day"))
         ]);
 
         $payload = base64ErlEncode($payload);

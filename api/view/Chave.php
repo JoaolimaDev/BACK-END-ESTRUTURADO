@@ -1,11 +1,9 @@
 <?php 
 namespace view;
 
-use model\Handle;
+require_once("api/model/DAO.php");
 
-require_once("api/model/Db_handle.php");
-
-use \PDO;
+use model\Sql;
 
 
 class Chave
@@ -18,35 +16,37 @@ class Chave
 
         $chave = htmlspecialchars(strip_tags($data->chave));
 
+        if (empty(trim($chave))) {
+            http_response_code(400);
+            echo json_encode([
+                'Sucesso'=> 0,
+                'Dados'=>'Por favor adione uma chave!'
+            ]);
+            exit;
+        }
 
-        $sql = "SELECT dbase FROM `cliente` WHERE chave = :chave";
+ 
+        $array_param = array(':chave' => $chave);
 
-       
-        $conn = Handle::Db_handle("jcasolutions_gip2021Admin");
+  
+        $dados = Sql::select("SELECT dbase FROM `cliente` WHERE chave = :chave", "jcasolutions_gip2021Admin", $array_param);
 
-        $stmt = $conn->prepare($sql);
-
-        $stmt->bindValue(':chave', $chave, PDO::PARAM_STR);
-
-        $stmt->execute();
-
-        if ($stmt->rowCount() > 0) {
-            
-            $dados = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if (count($dados) > 0) {
 
             http_response_code(200);
             echo json_encode([
                 'Sucesso'=> 1,
-                'Sados'=>$dados
+                'Dados'=>$dados
             ]);
             exit;
 
         }else{
 
-            http_response_code(200);
+            http_response_code(403);
             echo json_encode([
                 'Sucesso'=> 0,
-                'Sados'=>'Chave inválida!'
+                'Mensagem'=>'Chave inválida!'
             ]);
             exit;
 
@@ -57,6 +57,5 @@ class Chave
     
    
 }
-
 
 ?>
