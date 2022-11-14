@@ -22,13 +22,12 @@ function loader() : void
 require_once("vendor/autoload.php");
 require_once("api/controller/Ctrl.php");
 
-use Psr\Http\Message\ResponseInterface as Response;
+
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selective\BasePath\BasePathMiddleware;
 use Slim\Factory\AppFactory;
 use view\Chave;
 use controller\Ctrl;
-
 
 $app = AppFactory::create();
 
@@ -37,45 +36,54 @@ $app->add(new BasePathMiddleware($app));
 $app->addErrorMiddleware(false, true ,true);
 
 
-    $app->post('/client/chave', function () {
+
+    $app->post('/client/{menuop}/', function (Request $request) {
+
+        $menuop = is_string($request->getAttribute('menuop')) ? htmlspecialchars($request->getAttribute('menuop')) : null;
+
+        loader();
+
+        new view\Client($menuop);
+            
+    });
+
+    $app->post('/client/auth-key', function () {
 
        loader();
     
         Chave::auth_key();
         
     });
-    
 
-    $app->post('/client/{menuop}', function (Request $request) {
+
+    $app->post('/user-action/{menuop}/', function (Request $request) {
 
         loader();
 
-        $menuop = is_string($request->getAttribute('menuop')) ? htmlspecialchars($request->getAttribute('menuop')) : null;
+      $menuop = is_string($request->getAttribute('menuop')) ? htmlspecialchars($request->getAttribute('menuop')) : null;
     
       new view\Login($menuop, $_SERVER['DB']);
 
     });
 
 
-    $app->post('/user/{menuop}', function ( Request $request) {
-
-        
-        Ctrl::Auth_call($_SERVER['HTTP_AUTHORIZATION'], $_SERVER['DB']);
+    $app->post('/user/cadastro', function () {
     
         loader();
-
-        $menuop = is_string($request->getAttribute('menuop')) ? htmlspecialchars($request->getAttribute('menuop')) : null;
-        
-        new view\User($menuop, $_SERVER['DB']);
-
+        new view\User("cadastro", $_SERVER['DB']);
 
     });
 
-    
+    $app->post('/user/{menuop}/', function (Request $request) {
+        
+        Ctrl::Auth_call($_SERVER['HTTP_AUTHORIZATION'], $_SERVER['DB']);
 
-  
-
-
+        $menuop = is_string($request->getAttribute('menuop')) ? htmlspecialchars($request->getAttribute('menuop')) : null;
+     
+         loader();
+         new view\User($menuop, $_SERVER['DB']);
+ 
+     });
 
 $app->run();
 

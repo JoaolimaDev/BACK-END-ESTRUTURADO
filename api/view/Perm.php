@@ -1,45 +1,45 @@
 <?php 
 namespace view;
-require_once("api/model/Db_handle.php");
 
-
-use model\Handle;
-use PDO;
+require_once("api/model/DAO.php");
+use model\Sql;
 
 class Perm
 {
-    public static function User_Perm($db)
+    
+    public function All_Perm()
+    {
+        
+    }
+
+    public static function User_Perm(string $user, string $db, string $perms)
     {
 
-        $data = json_decode(file_get_contents("php://input"));
-        
-        $user = 1; 
+        $query = Sql::select("SELECT id_usuario FROM `user` WHERE user = :user", $db, array(':user' =>
+        $user));
 
+        $dados = $query[0];
 
-        $query = "INSERT INTO `permissions` (fk_id_user, perms) VALUES((SELECT id_user FROM user WHERE user = $user), :perm)";
-
-        $conn = Handle::Db_handle($db);
-        $stmt = $conn->prepare($query);
-        //bind dos valores
-        
-        $stmt->bindValue(':perm', $data->perm , PDO::PARAM_STR);
-
-        if ($stmt->execute()) {
-
-            echo json_encode([
-                'sucesso' => 0,
-                'mensagem' => 'Por favor, confirme sua senha.',
-            ]);
-            exit;
-            
-        }
-            
+        Sql::query("INSERT INTO `permissions` (perms, user_id_usuario) VALUES(:perms, :user_id)", $db, 
+        array(':perms' => $perms, ':user_id' => $dados['id_usuario']));
+    
     }
 
 
-    public static function User_Perm_update()
+    public static function Select_User_Perm (string $id_user, string $db)
     {
-        # code...
+        
+    }
+
+    public static function Delete_User_Perm(string $id_user, string $db)
+    {
+        
+    }
+
+
+    public static function User_Perm_update(string $id_user, string $db, string $perms)
+    {
+        
     }
 }
 

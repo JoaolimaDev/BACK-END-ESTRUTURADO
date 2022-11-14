@@ -8,44 +8,49 @@ class Sql{
     
     public static $stmt;
 
-    public static function select(string $Raw_Query, string $db, array $params = array()) : array
-    {
+  public static function select(string $Raw_Query, string $db, array $params = array()) : array
+  {
 
-        $conn = Handle::Db_handle($db);
-
-        Sql::$stmt = $conn->prepare($Raw_Query);
-        
-        Sql::Bind($params);
-
-        Sql::$stmt->execute();
-    
-        return Sql::$stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-    }
-
-    public function query(string $Raw_Query, string $db, array $params = array())
-    {
-      
       $conn = Handle::Db_handle($db);
 
       Sql::$stmt = $conn->prepare($Raw_Query);
-
-      Sql::Bind($params);
+      
+      Sql::setParams($params);
 
       Sql::$stmt->execute();
+  
+      return Sql::$stmt->fetchAll(PDO::FETCH_ASSOC);
+      
+  }
 
-    }
+  public static function query(string $Raw_Query, string $db, array $params = array())
+  {
+   
+    $conn = Handle::Db_handle($db);
 
-    public static function Bind($params)
-    {
+    Sql::$stmt = $conn->prepare($Raw_Query);
+    
+    Sql::setParams($params);
 
-      foreach ($params as $key => $value) {
+    Sql::$stmt->execute();
+  }
 
-        return Sql::$stmt->bindValue($key, $value);
+  private static function setParams($parameters = array())
+	{
 
-      }
+		foreach ($parameters as $key => $value) {
+			
+			Sql::bindParam($key, $value);
 
-    }
- 
+		}
+
+	}
+
+	private static function bindParam($key, $value)
+	{
+
+		return Sql::$stmt->bindValue($key, $value);
+
+	}
 }
 ?>

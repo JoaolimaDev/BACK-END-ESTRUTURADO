@@ -28,19 +28,18 @@ class Chave
  
         $array_param = array(':chave' => $chave);
 
-  
-        $dados = Sql::select("SELECT dbase FROM `cliente` WHERE chave = :chave", "jcasolutions_gip2021Admin", $array_param);
+        $dados = Sql::select("SELECT dbase, bloqueado FROM `cliente` WHERE chave = :chave", "jcasolutions_gip2021Admin", $array_param);
 
-        
-        if (count($dados) > 0) {
 
-            http_response_code(200);
+
+        if(count($dados) > 0){
+
             echo json_encode([
                 'Sucesso'=> 1,
                 'Dados'=>$dados
             ]);
             exit;
-
+            
         }else{
 
             http_response_code(403);
@@ -51,8 +50,24 @@ class Chave
             exit;
 
         }
-
         
+    }
+    
+    public static function Get_Key() : string
+    {
+        $numbers = [];
+
+        for ($i=0; $i < 4 ; $i++) { 
+            
+            $numbers[] = mt_rand(0, 1000000);
+
+        }
+    
+   
+        $token = $numbers[0]. "-". $numbers[1]. "-". $numbers[2]. "-". $numbers[3];
+ 
+        return $token;
+    
     }
     
    
