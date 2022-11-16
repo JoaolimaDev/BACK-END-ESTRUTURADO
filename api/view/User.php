@@ -106,7 +106,7 @@ class User
                 http_response_code(200);
                 echo json_encode([ 
                     'sucesso' => 1,
-                    'mensagem' => 'Usuário ' . $user. ' Cadastrado com sucesso!'
+                    'mensagem' => 'Usuário .: ' . $user. ' Cadastrado com sucesso!'
                 ]);
                 exit;
             

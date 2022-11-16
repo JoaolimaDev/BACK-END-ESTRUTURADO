@@ -3,9 +3,7 @@ namespace controller;
 
 
 class Ctrl 
-{
-
-  
+{  
     public static function Token_call(string $user) : string
     {
         require_once("Token.php");
@@ -21,8 +19,5 @@ class Ctrl
         
     }
 }
-
-
-
 
 ?>

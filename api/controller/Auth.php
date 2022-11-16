@@ -68,7 +68,7 @@ class Auth
                 http_response_code(403);
                 echo json_encode([
                     'Sucesso'=>0,
-                    'Mensagem'=>'Sessão expirada! Por favor realize o login novamente.. 2 !'
+                    'Mensagem'=>'Sessão expirada! Por favor realize o login novamente...'
                 ]);
                 exit;
             }
@@ -78,7 +78,7 @@ class Auth
             http_response_code(403);
             echo json_encode([
                 'Sucesso' => 0,
-               'Mensagem' => 'Erro desconhecido! Por favor contate o administrador! 3'
+               'Mensagem' => 'Erro desconhecido! Por favor contate o administrador!'
             ]);
             exit;
         }

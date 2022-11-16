@@ -97,7 +97,7 @@ class Login
                 http_response_code(400);
                 echo json_encode([
                     'Sucesso' => 0,
-                   'Mensagem' => 'Usuário ou senha inválidos 1 !'
+                   'Mensagem' => 'Usuário ou senha inválidos!'
                 ]);
                 exit;
             
@@ -108,7 +108,7 @@ class Login
             http_response_code(400);
             echo json_encode([
                 'Sucesso' => 0,
-               'Mensagem' => 'Usuário ou senha inválidos 2!'
+               'Mensagem' => 'Usuário ou senha inválidos!'
             ]);
             exit;
         }
