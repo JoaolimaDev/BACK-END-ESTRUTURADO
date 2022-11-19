@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Slim Framework (https://slimframework.com)
  *
@@ -13,8 +12,6 @@ namespace Slim\Factory\Psr17;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
 use Slim\Interfaces\ServerRequestCreatorInterface;
-
-use function class_exists;
 
 class SlimHttpServerRequestCreator implements ServerRequestCreatorInterface
 {
@@ -47,15 +44,7 @@ class SlimHttpServerRequestCreator implements ServerRequestCreatorInterface
 
         $request = $this->serverRequestCreator->createServerRequestFromGlobals();
 
-        if (
-            !((
-                $decoratedServerRequest = new static::$serverRequestDecoratorClass($request)
-                ) instanceof ServerRequestInterface)
-        ) {
-            throw new RuntimeException(get_called_class() . ' could not instantiate a decorated server request.');
-        }
-
-        return $decoratedServerRequest;
+        return new static::$serverRequestDecoratorClass($request);
     }
 
     /**

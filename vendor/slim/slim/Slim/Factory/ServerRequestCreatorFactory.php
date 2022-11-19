@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Slim Framework (https://slimframework.com)
  *
@@ -77,8 +76,7 @@ class ServerRequestCreatorFactory
     protected static function attemptServerRequestCreatorDecoration(
         ServerRequestCreatorInterface $serverRequestCreator
     ): ServerRequestCreatorInterface {
-        if (
-            static::$slimHttpDecoratorsAutomaticDetectionEnabled
+        if (static::$slimHttpDecoratorsAutomaticDetectionEnabled
             && SlimHttpServerRequestCreator::isServerRequestDecoratorAvailable()
         ) {
             return new SlimHttpServerRequestCreator($serverRequestCreator);

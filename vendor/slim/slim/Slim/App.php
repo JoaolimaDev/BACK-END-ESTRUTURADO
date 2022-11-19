@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Slim Framework (https://slimframework.com)
  *
@@ -16,7 +15,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Log\LoggerInterface;
 use Slim\Factory\ServerRequestCreatorFactory;
 use Slim\Interfaces\CallableResolverInterface;
 use Slim\Interfaces\MiddlewareDispatcherInterface;
@@ -29,8 +27,6 @@ use Slim\Routing\RouteCollectorProxy;
 use Slim\Routing\RouteResolver;
 use Slim\Routing\RouteRunner;
 
-use function strtoupper;
-
 class App extends RouteCollectorProxy implements RequestHandlerInterface
 {
     /**
@@ -38,7 +34,7 @@ class App extends RouteCollectorProxy implements RequestHandlerInterface
      *
      * @var string
      */
-    public const VERSION = '4.10.0';
+    public const VERSION = '4.2.0';
 
     /**
      * @var RouteResolverInterface
@@ -74,7 +70,7 @@ class App extends RouteCollectorProxy implements RequestHandlerInterface
         );
 
         $this->routeResolver = $routeResolver ?? new RouteResolver($this->routeCollector);
-        $routeRunner = new RouteRunner($this->routeResolver, $this->routeCollector->getRouteParser(), $this);
+        $routeRunner = new RouteRunner($this->routeResolver, $this->routeCollector->getRouteParser());
 
         if (!$middlewareDispatcher) {
             $middlewareDispatcher = new MiddlewareDispatcher($routeRunner, $this->callableResolver, $container);
@@ -124,8 +120,6 @@ class App extends RouteCollectorProxy implements RequestHandlerInterface
     /**
      * Add the Slim built-in routing middleware to the app middleware stack
      *
-     * This method can be used to control middleware order and is not required for default routing operation.
-     *
      * @return RoutingMiddleware
      */
     public function addRoutingMiddleware(): RoutingMiddleware
@@ -141,26 +135,23 @@ class App extends RouteCollectorProxy implements RequestHandlerInterface
     /**
      * Add the Slim built-in error middleware to the app middleware stack
      *
-     * @param bool                 $displayErrorDetails
-     * @param bool                 $logErrors
-     * @param bool                 $logErrorDetails
-     * @param LoggerInterface|null $logger
+     * @param bool $displayErrorDetails
+     * @param bool $logErrors
+     * @param bool $logErrorDetails
      *
      * @return ErrorMiddleware
      */
     public function addErrorMiddleware(
         bool $displayErrorDetails,
         bool $logErrors,
-        bool $logErrorDetails,
-        ?LoggerInterface $logger = null
+        bool $logErrorDetails
     ): ErrorMiddleware {
         $errorMiddleware = new ErrorMiddleware(
             $this->getCallableResolver(),
             $this->getResponseFactory(),
             $displayErrorDetails,
             $logErrors,
-            $logErrorDetails,
-            $logger
+            $logErrorDetails
         );
         $this->add($errorMiddleware);
         return $errorMiddleware;

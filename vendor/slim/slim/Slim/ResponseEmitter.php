@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Slim Framework (https://slimframework.com)
  *
@@ -11,17 +10,6 @@ declare(strict_types=1);
 namespace Slim;
 
 use Psr\Http\Message\ResponseInterface;
-
-use function connection_status;
-use function header;
-use function headers_sent;
-use function in_array;
-use function min;
-use function sprintf;
-use function strlen;
-use function strtolower;
-
-use const CONNECTION_NORMAL;
 
 class ResponseEmitter
 {
@@ -48,12 +36,13 @@ class ResponseEmitter
     {
         $isEmpty = $this->isResponseEmpty($response);
         if (headers_sent() === false) {
-            $this->emitHeaders($response);
-
-            // Set the status _after_ the headers, because of PHP's "helpful" behavior with location headers.
-            // See https://github.com/slimphp/Slim/issues/1730
-
+            if ($isEmpty) {
+                $response = $response
+                    ->withoutHeader('Content-Type')
+                    ->withoutHeader('Content-Length');
+            }
             $this->emitStatusLine($response);
+            $this->emitHeaders($response);
         }
 
         if (!$isEmpty) {

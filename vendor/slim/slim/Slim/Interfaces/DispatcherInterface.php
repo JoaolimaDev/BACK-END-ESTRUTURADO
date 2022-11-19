@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Slim Framework (https://slimframework.com)
  *
@@ -27,7 +26,7 @@ interface DispatcherInterface
      * Get allowed methods for a given uri
      *
      * @param string $uri
-     * @return string[]
+     * @return array
      */
     public function getAllowedMethods(string $uri): array;
 }

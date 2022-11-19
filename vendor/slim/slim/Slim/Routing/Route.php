@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Slim Framework (https://slimframework.com)
  *
@@ -25,13 +24,6 @@ use Slim\Interfaces\RequestHandlerInvocationStrategyInterface;
 use Slim\Interfaces\RouteGroupInterface;
 use Slim\Interfaces\RouteInterface;
 use Slim\MiddlewareDispatcher;
-
-use function array_key_exists;
-use function array_replace;
-use function array_reverse;
-use function class_implements;
-use function in_array;
-use function is_array;
 
 class Route implements RouteInterface, RequestHandlerInterface
 {
@@ -71,14 +63,14 @@ class Route implements RouteInterface, RequestHandlerInterface
     /**
      * Route parameters
      *
-     * @var array<string, string>
+     * @var array
      */
     protected $arguments = [];
 
     /**
      * Route arguments parameters
      *
-     * @var string[]
+     * @var array
      */
     protected $savedArguments = [];
 
@@ -312,7 +304,7 @@ class Route implements RouteInterface, RequestHandlerInterface
      */
     public function prepare(array $arguments): RouteInterface
     {
-        $this->arguments = array_replace($this->savedArguments, $arguments);
+        $this->arguments = array_replace($this->savedArguments, $arguments) ?? [];
         return $this;
     }
 
@@ -369,13 +361,9 @@ class Route implements RouteInterface, RequestHandlerInterface
         }
         $strategy = $this->invocationStrategy;
 
-        /** @var string[] $strategyImplements */
-        $strategyImplements = class_implements($strategy);
-
-        if (
-            is_array($callable)
+        if (is_array($callable)
             && $callable[0] instanceof RequestHandlerInterface
-            && !in_array(RequestHandlerInvocationStrategyInterface::class, $strategyImplements)
+            && !in_array(RequestHandlerInvocationStrategyInterface::class, class_implements($strategy))
         ) {
             $strategy = new RequestHandler();
         }

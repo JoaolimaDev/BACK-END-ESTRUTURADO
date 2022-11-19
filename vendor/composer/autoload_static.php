@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitd3b19762b1ef8a133f32e3fee14534b6
+class ComposerStaticInit87fef93a767dc3c50406e3f79fc18e63
 {
     public static $files = array (
         '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
@@ -16,13 +16,13 @@ class ComposerStaticInitd3b19762b1ef8a133f32e3fee14534b6
         'S' => 
         array (
             'Symfony\\Polyfill\\Php80\\' => 23,
+            'Slim\\Tests\\' => 11,
             'Slim\\Psr7\\' => 10,
             'Slim\\' => 5,
             'Selective\\BasePath\\' => 19,
         ),
         'P' => 
         array (
-            'Psr\\Log\\' => 8,
             'Psr\\Http\\Server\\' => 16,
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Container\\' => 14,
@@ -39,6 +39,10 @@ class ComposerStaticInitd3b19762b1ef8a133f32e3fee14534b6
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
         ),
+        'Slim\\Tests\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/slim/slim/tests',
+        ),
         'Slim\\Psr7\\' => 
         array (
             0 => __DIR__ . '/..' . '/slim/psr7/src',
@@ -51,10 +55,6 @@ class ComposerStaticInitd3b19762b1ef8a133f32e3fee14534b6
         array (
             0 => __DIR__ . '/..' . '/selective/basepath/src',
         ),
-        'Psr\\Log\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
-        ),
         'Psr\\Http\\Server\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-server-handler/src',
@@ -62,8 +62,8 @@ class ComposerStaticInitd3b19762b1ef8a133f32e3fee14534b6
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Container\\' => 
         array (
@@ -91,9 +91,9 @@ class ComposerStaticInitd3b19762b1ef8a133f32e3fee14534b6
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitd3b19762b1ef8a133f32e3fee14534b6::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitd3b19762b1ef8a133f32e3fee14534b6::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitd3b19762b1ef8a133f32e3fee14534b6::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit87fef93a767dc3c50406e3f79fc18e63::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit87fef93a767dc3c50406e3f79fc18e63::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit87fef93a767dc3c50406e3f79fc18e63::$classMap;
 
         }, null, ClassLoader::class);
     }

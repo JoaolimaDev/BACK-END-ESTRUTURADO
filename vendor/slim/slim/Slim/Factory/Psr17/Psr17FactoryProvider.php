@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Slim Framework (https://slimframework.com)
  *
@@ -12,8 +11,6 @@ namespace Slim\Factory\Psr17;
 
 use Slim\Interfaces\Psr17FactoryProviderInterface;
 
-use function array_unshift;
-
 class Psr17FactoryProvider implements Psr17FactoryProviderInterface
 {
     /**
@@ -21,9 +18,8 @@ class Psr17FactoryProvider implements Psr17FactoryProviderInterface
      */
     protected static $factories = [
         SlimPsr17Factory::class,
-        HttpSoftPsr17Factory::class,
         NyholmPsr17Factory::class,
-        LaminasDiactorosPsr17Factory::class,
+        ZendDiactorosPsr17Factory::class,
         GuzzlePsr17Factory::class,
     ];
 

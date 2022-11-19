@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Slim Framework (https://slimframework.com)
  *
@@ -38,7 +37,7 @@ class RequestHandler implements RequestHandlerInvocationStrategyInterface
      * @param callable               $callable
      * @param ServerRequestInterface $request
      * @param ResponseInterface      $response
-     * @param array<string, string>  $routeArguments
+     * @param array                  $routeArguments
      *
      * @return ResponseInterface
      */

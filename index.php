@@ -1,4 +1,5 @@
 <?php
+
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
@@ -19,7 +20,9 @@ function loader() : void
     });
 }
 
+
 require_once("vendor/autoload.php");
+
 require_once("api/controller/Ctrl.php");
 
 
@@ -29,11 +32,18 @@ use Slim\Factory\AppFactory;
 use view\Chave;
 use controller\Ctrl;
 
+
 $app = AppFactory::create();
 
+
 $app->addRoutingMiddleware();
+
+$app->addErrorMiddleware(false, true, true);
+
+
+$app->setBasePath("/home/jcasolutions/public_html/newgip");
 $app->add(new BasePathMiddleware($app));
-$app->addErrorMiddleware(false, true ,true);
+$app->addErrorMiddleware(true, true ,true);
 
 
 
@@ -66,9 +76,19 @@ $app->addErrorMiddleware(false, true ,true);
 
     });
 
+    $app->get('/teste', function (Request $request) {
+
+        loader();
+    
+      new view\Login("logout", $_SERVER['DB']);
+
+    });
+
 
     $app->post('/user/cadastro', function () {
-    
+
+        Ctrl::Auth_call($_SERVER['HTTP_AUTHORIZATION'], $_SERVER['DB']);
+        
         loader();
         new view\User("cadastro", $_SERVER['DB']);
 
@@ -86,6 +106,5 @@ $app->addErrorMiddleware(false, true ,true);
      });
 
 $app->run();
-
 
 ?>

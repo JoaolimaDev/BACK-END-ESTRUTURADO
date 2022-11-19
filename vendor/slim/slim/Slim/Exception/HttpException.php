@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Slim Framework (https://slimframework.com)
  *
@@ -10,14 +9,11 @@ declare(strict_types=1);
 
 namespace Slim\Exception;
 
+use Exception;
 use Psr\Http\Message\ServerRequestInterface;
-use RuntimeException;
 use Throwable;
 
-/**
- * @method int getCode()
- */
-class HttpException extends RuntimeException
+class HttpException extends Exception
 {
     /**
      * @var ServerRequestInterface

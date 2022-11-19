@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Slim Framework (https://slimframework.com)
  *
@@ -13,7 +12,6 @@ namespace Slim\Handlers;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Slim\Error\Renderers\HtmlErrorRenderer;
 use Slim\Error\Renderers\JsonErrorRenderer;
@@ -24,19 +22,7 @@ use Slim\Exception\HttpMethodNotAllowedException;
 use Slim\Interfaces\CallableResolverInterface;
 use Slim\Interfaces\ErrorHandlerInterface;
 use Slim\Interfaces\ErrorRendererInterface;
-use Slim\Logger;
 use Throwable;
-
-use function array_intersect;
-use function array_key_exists;
-use function array_keys;
-use function call_user_func;
-use function count;
-use function current;
-use function explode;
-use function implode;
-use function next;
-use function preg_match;
 
 /**
  * Default Slim application error handler
@@ -62,7 +48,7 @@ class ErrorHandler implements ErrorHandlerInterface
     protected $logErrorRenderer = PlainTextErrorRenderer::class;
 
     /**
-     * @var array<string|callable>
+     * @var array
      */
     protected $errorRenderers = [
         'application/json' => JsonErrorRenderer::class,
@@ -123,23 +109,13 @@ class ErrorHandler implements ErrorHandlerInterface
     protected $responseFactory;
 
     /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-    /**
      * @param CallableResolverInterface $callableResolver
      * @param ResponseFactoryInterface  $responseFactory
-     * @param LoggerInterface|null      $logger
      */
-    public function __construct(
-        CallableResolverInterface $callableResolver,
-        ResponseFactoryInterface $responseFactory,
-        ?LoggerInterface $logger = null
-    ) {
+    public function __construct(CallableResolverInterface $callableResolver, ResponseFactoryInterface $responseFactory)
+    {
         $this->callableResolver = $callableResolver;
         $this->responseFactory = $responseFactory;
-        $this->logger = $logger ?: $this->getDefaultLogger();
     }
 
     /**
@@ -212,7 +188,7 @@ class ErrorHandler implements ErrorHandlerInterface
      * as willdurand/negotiation for any other situation.
      *
      * @param ServerRequestInterface $request
-     * @return string|null
+     * @return string
      */
     protected function determineContentType(ServerRequestInterface $request): ?string
     {
@@ -231,15 +207,10 @@ class ErrorHandler implements ErrorHandlerInterface
              * when multiple content types are provided via Accept header.
              */
             if ($current === 'text/plain' && $count > 1) {
-                $next = next($selectedContentTypes);
-                if (is_string($next)) {
-                    return $next;
-                }
+                return next($selectedContentTypes);
             }
 
-            if (is_string($current)) {
-                return $current;
-            }
+            return $current;
         }
 
         if (preg_match('/\+(json|xml)/', $acceptHeader, $matches)) {
@@ -312,10 +283,7 @@ class ErrorHandler implements ErrorHandlerInterface
     {
         $renderer = $this->callableResolver->resolve($this->logErrorRenderer);
         $error = $renderer($this->exception, $this->logErrorDetails);
-        if (!$this->displayErrorDetails) {
-            $error .= "\nTips: To display error details in HTTP response ";
-            $error .= 'set "displayErrorDetails" to true in the ErrorHandler constructor.';
-        }
+        $error .= "\nView in rendered output by enabling the \"displayErrorDetails\" setting.\n";
         $this->logError($error);
     }
 
@@ -327,17 +295,7 @@ class ErrorHandler implements ErrorHandlerInterface
      */
     protected function logError(string $error): void
     {
-        $this->logger->error($error);
-    }
-
-    /**
-     * Returns a default logger implementation.
-     *
-     * @return LoggerInterface
-     */
-    protected function getDefaultLogger(): LoggerInterface
-    {
-        return new Logger();
+        error_log($error);
     }
 
     /**
@@ -359,10 +317,7 @@ class ErrorHandler implements ErrorHandlerInterface
 
         $renderer = $this->determineRenderer();
         $body = call_user_func($renderer, $this->exception, $this->displayErrorDetails);
-        if ($body !== false) {
-            /** @var string $body */
-            $response->getBody()->write($body);
-        }
+        $response->getBody()->write($body);
 
         return $response;
     }

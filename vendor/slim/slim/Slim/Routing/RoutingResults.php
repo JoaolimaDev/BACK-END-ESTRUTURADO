@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Slim Framework (https://slimframework.com)
  *
@@ -11,8 +10,6 @@ declare(strict_types=1);
 namespace Slim\Routing;
 
 use Slim\Interfaces\DispatcherInterface;
-
-use function rawurldecode;
 
 class RoutingResults
 {
@@ -50,17 +47,17 @@ class RoutingResults
     protected $routeIdentifier;
 
     /**
-     * @var array<string, string>
+     * @var array
      */
     protected $routeArguments;
 
     /**
-     * @param DispatcherInterface   $dispatcher
-     * @param string                $method
-     * @param string                $uri
-     * @param int                   $routeStatus
-     * @param string|null           $routeIdentifier
-     * @param array<string, string> $routeArguments
+     * @param DispatcherInterface $dispatcher
+     * @param string              $method
+     * @param string              $uri
+     * @param int                 $routeStatus
+     * @param string|null         $routeIdentifier
+     * @param array               $routeArguments
      */
     public function __construct(
         DispatcherInterface $dispatcher,
@@ -120,7 +117,7 @@ class RoutingResults
 
     /**
      * @param bool $urlDecode
-     * @return array<string, string>
+     * @return array
      */
     public function getRouteArguments(bool $urlDecode = true): array
     {
@@ -137,7 +134,7 @@ class RoutingResults
     }
 
     /**
-     * @return string[]
+     * @return array
      */
     public function getAllowedMethods(): array
     {

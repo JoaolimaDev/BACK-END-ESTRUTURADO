@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Slim Framework (https://slimframework.com)
  *
@@ -26,7 +25,7 @@ class RequestResponse implements InvocationStrategyInterface
      * @param callable               $callable
      * @param ServerRequestInterface $request
      * @param ResponseInterface      $response
-     * @param array<string, string>  $routeArguments
+     * @param array                  $routeArguments
      *
      * @return ResponseInterface
      */

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Slim Framework (https://slimframework.com)
  *
@@ -15,12 +14,6 @@ use InvalidArgumentException;
 use Psr\Http\Message\UriInterface;
 use Slim\Interfaces\RouteCollectorInterface;
 use Slim\Interfaces\RouteParserInterface;
-
-use function array_key_exists;
-use function array_reverse;
-use function http_build_query;
-use function implode;
-use function is_string;
 
 class RouteParser implements RouteParserInterface
 {
@@ -71,7 +64,6 @@ class RouteParser implements RouteParserInterface
                     continue;
                 }
 
-                /** @var string[] $segment */
                 /*
                  * If we don't have a data element for this segment in the provided $data
                  * we cancel testing to move onto the next expression with a less specific item

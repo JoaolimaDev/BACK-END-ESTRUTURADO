@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Slim Framework (https://slimframework.com)
  *
@@ -16,15 +15,6 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use RuntimeException;
 use Slim\Interfaces\AdvancedCallableResolverInterface;
-
-use function class_exists;
-use function is_array;
-use function is_callable;
-use function is_object;
-use function is_string;
-use function json_encode;
-use function preg_match;
-use function sprintf;
 
 final class CallableResolver implements AdvancedCallableResolverInterface
 {
@@ -51,7 +41,6 @@ final class CallableResolver implements AdvancedCallableResolverInterface
      */
     public function resolve($toResolve): callable
     {
-        $toResolve = $this->prepareToResolve($toResolve);
         if (is_callable($toResolve)) {
             return $this->bindToContainer($toResolve);
         }
@@ -91,7 +80,6 @@ final class CallableResolver implements AdvancedCallableResolverInterface
      */
     private function resolveByPredicate($toResolve, callable $predicate, string $defaultMethod): callable
     {
-        $toResolve = $this->prepareToResolve($toResolve);
         if (is_callable($toResolve)) {
             return $this->bindToContainer($toResolve);
         }
@@ -101,7 +89,7 @@ final class CallableResolver implements AdvancedCallableResolverInterface
         }
         if (is_string($toResolve)) {
             [$instance, $method] = $this->resolveSlimNotation($toResolve);
-            if ($method === null && $predicate($instance)) {
+            if ($predicate($instance) && $method === null) {
                 $method = $defaultMethod;
             }
             $resolved = [$instance, $method ?? '__invoke'];
@@ -135,25 +123,17 @@ final class CallableResolver implements AdvancedCallableResolverInterface
      *
      * @throws RuntimeException
      *
-     * @return array{object, string|null} [Instance, Method Name]
+     * @return array [Instance, Method Name]
      */
     private function resolveSlimNotation(string $toResolve): array
     {
         preg_match(CallableResolver::$callablePattern, $toResolve, $matches);
         [$class, $method] = $matches ? [$matches[1], $matches[2]] : [$toResolve, null];
 
-        /** @var string $class */
-        /** @var string|null $method */
         if ($this->container && $this->container->has($class)) {
             $instance = $this->container->get($class);
-            if (!is_object($instance)) {
-                throw new RuntimeException(sprintf('%s container entry is not an object', $class));
-            }
         } else {
             if (!class_exists($class)) {
-                if ($method) {
-                    $class .= '::' . $method . '()';
-                }
                 throw new RuntimeException(sprintf('Callable %s does not exist', $class));
             }
             $instance = new $class($this->container);
@@ -172,12 +152,11 @@ final class CallableResolver implements AdvancedCallableResolverInterface
     private function assertCallable($resolved, $toResolve): callable
     {
         if (!is_callable($resolved)) {
-            if (is_callable($toResolve) || is_object($toResolve) || is_array($toResolve)) {
-                $formatedToResolve = ($toResolveJson = json_encode($toResolve)) !== false ? $toResolveJson : '';
-            } else {
-                $formatedToResolve = is_string($toResolve) ? $toResolve : '';
-            }
-            throw new RuntimeException(sprintf('%s is not resolvable', $formatedToResolve));
+            throw new RuntimeException(sprintf(
+                '%s is not resolvable',
+                is_callable($toResolve) || is_object($toResolve) || is_array($toResolve) ?
+                    json_encode($toResolve) : $toResolve
+            ));
         }
         return $resolved;
     }
@@ -193,27 +172,8 @@ final class CallableResolver implements AdvancedCallableResolverInterface
             $callable = $callable[0];
         }
         if ($this->container && $callable instanceof Closure) {
-            /** @var Closure $callable */
             $callable = $callable->bindTo($this->container);
         }
         return $callable;
-    }
-
-    /**
-     * @param string|callable $toResolve
-     * @return string|callable
-     */
-    private function prepareToResolve($toResolve)
-    {
-        if (!is_array($toResolve)) {
-            return $toResolve;
-        }
-        $candidate = $toResolve;
-        $class = array_shift($candidate);
-        $method = array_shift($candidate);
-        if (is_string($class) && is_string($method)) {
-            return $class . ':' . $method;
-        }
-        return $toResolve;
     }
 }

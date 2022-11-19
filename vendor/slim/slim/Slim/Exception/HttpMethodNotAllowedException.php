@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Slim Framework (https://slimframework.com)
  *
@@ -10,30 +9,20 @@ declare(strict_types=1);
 
 namespace Slim\Exception;
 
-use function implode;
-
 class HttpMethodNotAllowedException extends HttpSpecializedException
 {
     /**
-     * @var string[]
+     * @var array
      */
     protected $allowedMethods = [];
 
-    /**
-     * @var int
-     */
     protected $code = 405;
-
-    /**
-     * @var string
-     */
     protected $message = 'Method not allowed.';
-
     protected $title = '405 Method Not Allowed';
     protected $description = 'The request method is not supported for the requested resource.';
 
     /**
-     * @return string[]
+     * @return array
      */
     public function getAllowedMethods(): array
     {
@@ -41,13 +30,12 @@ class HttpMethodNotAllowedException extends HttpSpecializedException
     }
 
     /**
-     * @param string[] $methods
+     * @param array $methods
      * @return self
      */
     public function setAllowedMethods(array $methods): HttpMethodNotAllowedException
     {
         $this->allowedMethods = $methods;
-        $this->message = 'Method not allowed. Must be one of: ' . implode(', ', $methods);
         return $this;
     }
 }

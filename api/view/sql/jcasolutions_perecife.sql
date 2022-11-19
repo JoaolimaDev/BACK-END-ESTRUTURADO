@@ -23,7 +23,7 @@ CREATE TABLE `coleta` (
 CREATE TABLE `coletor` (
   `id_coletor` int NOT NULL,
   `coletor` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -73,7 +73,7 @@ CREATE TABLE `distrito_equipe` (
 CREATE TABLE `empreiteiras` (
   `id_empreiteiras` int NOT NULL,
   `nome_empreiteira` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -117,7 +117,7 @@ CREATE TABLE `fiscals` (
   `id_fiscal` int UNSIGNED NOT NULL,
   `nome` varchar(255) NOT NULL,
   `orgao_fiscalizador` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -129,7 +129,7 @@ CREATE TABLE `fornecedor` (
   `id_fornecedor` int NOT NULL,
   `fornecedor` varchar(255) NOT NULL,
   `email` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -173,8 +173,7 @@ CREATE TABLE `materiais_movi` (
   `quantidade_movi` varchar(255) NOT NULL,
   `data_movi` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `user_id_usuario` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 -- --------------------------------------------------------
 
 --
@@ -185,7 +184,7 @@ CREATE TABLE `materias_pontos` (
   `id_ponto_materiais` int NOT NULL,
   `pontos_id_ponto` int NOT NULL,
   `materias_pontos` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -199,7 +198,7 @@ CREATE TABLE `municipios` (
   `municipio` varchar(255) NOT NULL,
   `uf` varchar(255) NOT NULL,
   `prefeito` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -219,7 +218,7 @@ CREATE TABLE `ordem_servicos` (
   `pontos_id_ponto` int NOT NULL,
   `distrito_equipe_id_equipe` int NOT NULL,
   `tp_os_tp_os` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -244,9 +243,9 @@ CREATE TABLE `ordem_servico_baixa` (
 
 CREATE TABLE `permissions` (
   `id_perm` int NOT NULL,
-  `perms` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `perms` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `user_id_usuario` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -277,7 +276,7 @@ CREATE TABLE `pontos` (
   `posicao` varchar(255) NOT NULL,
   `user_id_usuario` int NOT NULL,
   `municipios_id_municipio` int UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -289,7 +288,7 @@ CREATE TABLE `seq_transf` (
   `seq_tranf` int NOT NULL,
   `transformadores_id_transf` int NOT NULL,
   `pontos_id_ponto` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -317,7 +316,7 @@ CREATE TABLE `smart_city_status` (
   `dev_stat` varchar(20) DEFAULT NULL,
   `dev_data` datetime DEFAULT NULL,
   `pontos_id_ponto` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -356,7 +355,7 @@ CREATE TABLE `telefones` (
   `telefones` varchar(255) DEFAULT NULL,
   `tecnicos_id_tecnico` int DEFAULT NULL,
   `coletor_id_coletor` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -382,7 +381,7 @@ CREATE TABLE `telegestao` (
 CREATE TABLE `tp_os` (
   `tp_os` int NOT NULL,
   `tipo` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -405,11 +404,11 @@ CREATE TABLE `transformadores` (
 
 CREATE TABLE `user` (
   `id_usuario` int NOT NULL,
-  `user` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `id_log` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `user` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `id_log` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -421,7 +420,7 @@ CREATE TABLE `user_log` (
   `id` int NOT NULL,
   `user_log` varchar(255) NOT NULL,
   `user` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
