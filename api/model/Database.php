@@ -7,10 +7,10 @@ use PDOException;
 class Database {
   // DB Params
  
-  private $host = 'jcasolutions.com.br';
-  private $db_name = 'jcasolutions_gip2021Admin';
-  private $username = 'jcasolutions_gip2021Admin';
-  private $password = 'jcasolutions369*';
+  private $host = 
+  private $db_name = 
+  private $username = 
+  private $password = 
   private $conn;
 
   // DB Connect
